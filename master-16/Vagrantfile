@@ -1,0 +1,66 @@
+Vagrant.configure("2") do |config|
+
+  config.vm.provider :virtualbox do |v|
+    v.name = "k8s-eckAction-master-16"
+    v.memory = 8192
+    v.cpus = 2
+  end
+
+  config.vm.define :master do |master|
+    master.vm.box = "ubuntu/xenial64"
+    master.vm.box_url = "https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/xenial/current/xenial-server-cloudimg-amd64-vagrant.box"
+    master.vm.hostname = "eckAction-master-16"
+    master.vm.network "public_network", ip: "192.168.0.210"
+    master.vm.synced_folder "./sync_dir", "/vagrant_sync_dir"
+    master.vm.provision "shell", inline: $kubeadm_install
+  end
+
+end
+
+$kubeadm_install = <<-SCRIPT
+# add gpg key file
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+
+# add kubernetes source to deb db
+cat <<EOF > /etc/apt/sources.list.d/kubernetes.list
+deb http://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+
+# install kubeadm, kubelet, kubectl, kubernetes-cni
+apt-get update
+apt-get install -y docker.io kubeadm
+
+# master kubeadm config file
+cat <<EOF > ./kubeadm.yaml
+apiVersion: kubeadm.k8s.io/v1beta2
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: 192.168.0.210
+---
+apiVersion: kubeadm.k8s.io/v1beta2
+kind: ClusterConfiguration
+#kubernetesVersion: v1.18
+controllerManager:
+  extraArgs:
+    horizontal-pod-autoscaler-use-rest-clients: "true"
+    horizontal-pod-autoscaler-sync-period: "10s"
+    node-monitor-grace-period: "10s"
+    bind-address: 0.0.0.0
+apiServer:
+  extraArgs:
+    advertise-address: 192.168.0.210
+    runtime-config: "api/all=true"
+EOF
+
+# do master node init
+sudo kubeadm init --config ./kubeadm.yaml
+
+# config kubeadm config to HOME folder
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+# deploy network plugin
+sudo kubectl apply -f "https://frontend.dev.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+
+SCRIPT
