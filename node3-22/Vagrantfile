@@ -31,6 +31,9 @@ apt-get update
 apt-get install -y docker.io kubeadm
 
 # join to master
-sudo kubeadm join 10.0.2.15:6443 --token a6a2bw.8bilxcpgh8qcmm5u --discovery-token-ca-cert-hash sha256:7a959216821f638eea139dec84505814b95f93f167a76527932730400d77cf10
+sudo kubeadm join 192.168.0.210:6443 --token qpdh2q.pjb69c8etdbkxtrx --discovery-token-ca-cert-hash sha256:3e5788f4f17f782e53c939bf7817d884b711acb55481eeac2438cb9d1a6f7257
+
+# deploy network plugin
+# sudo kubectl apply -f "https://frontend.dev.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 
 SCRIPT

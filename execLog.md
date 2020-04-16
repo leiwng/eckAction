@@ -582,6 +582,7 @@ eckaction-node1-48    NotReady   <none>   4m20s   v1.18.1
 eckaction-node3-22    NotReady   <none>   4m27s   v1.18.1
 eckaction-node4-77    NotReady   <none>   4m17s   v1.18.1
 ```
+- 上面执行的问题是，后面拷贝目录(.kube)操作没有执行，但按照网络plugin的操作执行了，比较奇怪，要检查一下Vagrantfile
 
 ## Node节点成功join到Master
 
@@ -604,3 +605,77 @@ This node has joined the cluster:
 
 Run 'kubectl get nodes' on the control-plane to see this node join the cluster.
 ```
+
+## Node节点成功join到Master，查看非master节点的情况
+
+```shell
+vagrant@eckAction-master-16:~$ kubectl describe node eckaction-node1-48
+Name:               eckaction-node1-48
+Roles:              <none>
+Labels:             beta.kubernetes.io/arch=amd64
+                    beta.kubernetes.io/os=linux
+                    kubernetes.io/arch=amd64
+                    kubernetes.io/hostname=eckaction-node1-48
+                    kubernetes.io/os=linux
+Annotations:        kubeadm.alpha.kubernetes.io/cri-socket: /var/run/dockershim.sock
+                    node.alpha.kubernetes.io/ttl: 0
+                    volumes.kubernetes.io/controller-managed-attach-detach: true
+CreationTimestamp:  Wed, 15 Apr 2020 10:36:48 +0000
+Taints:             node.kubernetes.io/not-ready:NoSchedule
+Unschedulable:      false
+Lease:
+  HolderIdentity:  eckaction-node1-48
+  AcquireTime:     <unset>
+  RenewTime:       Thu, 16 Apr 2020 02:01:50 +0000
+Conditions:
+  Type             Status  LastHeartbeatTime                 LastTransitionTime                Reason                       Message
+  ----             ------  -----------------                 ------------------                ------                       -------
+  MemoryPressure   False   Thu, 16 Apr 2020 02:00:47 +0000   Wed, 15 Apr 2020 23:50:43 +0000   KubeletHasSufficientMemory   kubelet has sufficient memory available
+  DiskPressure     False   Thu, 16 Apr 2020 02:00:47 +0000   Wed, 15 Apr 2020 23:50:43 +0000   KubeletHasNoDiskPressure     kubelet has no disk pressure
+  PIDPressure      False   Thu, 16 Apr 2020 02:00:47 +0000   Wed, 15 Apr 2020 23:50:43 +0000   KubeletHasSufficientPID      kubelet has sufficient PID available
+  Ready            False   Thu, 16 Apr 2020 02:00:47 +0000   Wed, 15 Apr 2020 23:50:43 +0000   KubeletNotReady              runtime network not ready: NetworkReady=false reason:NetworkPluginNotReady message:docker: network plugin is not ready: cni config uninitialized
+Addresses:
+  InternalIP:  10.0.2.15
+  Hostname:    eckaction-node1-48
+Capacity:
+  cpu:                2
+  ephemeral-storage:  10098468Ki
+  hugepages-2Mi:      0
+  memory:             8175012Ki
+  pods:               110
+Allocatable:
+  cpu:                2
+  ephemeral-storage:  9306748094
+  hugepages-2Mi:      0
+  memory:             8072612Ki
+  pods:               110
+System Info:
+  Machine ID:                 2e2da739fad74d2f9d8dd053ab07f714
+  System UUID:                3A2A6119-896D-4CB5-B730-6D73CF6909D9
+  Boot ID:                    2a0ef81a-3e85-44a2-89fd-f5211a17ea37
+  Kernel Version:             4.4.0-177-generic
+  OS Image:                   Ubuntu 16.04.6 LTS
+  Operating System:           linux
+  Architecture:               amd64
+  Container Runtime Version:  docker://18.9.7
+  Kubelet Version:            v1.18.1
+  Kube-Proxy Version:         v1.18.1
+Non-terminated Pods:          (2 in total)
+  Namespace                   Name                CPU Requests  CPU Limits  Memory Requests  Memory Limits  AGE
+  ---------                   ----                ------------  ----------  ---------------  -------------  ---
+  kube-system                 kube-proxy-dpfql    0 (0%)        0 (0%)      0 (0%)           0 (0%)         15h
+  kube-system                 weave-net-gh4zx     20m (1%)      0 (0%)      0 (0%)           0 (0%)         15h
+Allocated resources:
+  (Total limits may be over 100 percent, i.e., overcommitted.)
+  Resource           Requests  Limits
+  --------           --------  ------
+  cpu                20m (1%)  0 (0%)
+  memory             0 (0%)    0 (0%)
+  ephemeral-storage  0 (0%)    0 (0%)
+  hugepages-2Mi      0 (0%)    0 (0%)
+Events:              <none>
+```
+
+- 错误：runtime network not ready: NetworkReady=false reason:NetworkPluginNotReady message:docker: network plugin is not ready: cni config uninitialized
+
+  - 需要安装网络插件，仍然是weaver plugin
