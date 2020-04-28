@@ -1,5 +1,10 @@
 {
   "cSpell.words": [
+    "Burstable",
+    "Tolerations",
+    "VERR",
+    "configmaps",
+    "crashloopbackoff",
     "kubeadm"
   ]
 }

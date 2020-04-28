@@ -21,14 +21,41 @@ $kubeadm_install = <<-SCRIPT
 # add gpg key file
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 
-# add kubernetes source to deb db
-cat <<EOF > /etc/apt/sources.list.d/kubernetes.list
-deb http://apt.kubernetes.io/ kubernetes-xenial main
+# add kubernetes source(ustc) to deb db
+sudo cat <<EOF > /etc/apt/sources.list.d/kubernetes.list
+deb http://mirrors.ustc.edu.cn/kubernetes/apt kubernetes-xenial main
 EOF
+
+## alternative aliyun source
+# sduo cat <<EOF > /etc/apt/sources.list.d/kubernetes.list
+# deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main
+# EOF
+## original source
+# sudo cat <<EOF > /etc/apt/sources.list.d/kubernetes.list
+# deb http://apt.kubernetes.io/ kubernetes-xenial main
+# EOF
 
 # install kubeadm, kubelet, kubectl, kubernetes-cni
 apt-get update
 apt-get install -y docker.io kubeadm
+
+# make cgroup driver to be systemd
+sudo cat > /etc/docker/daemon.json <<EOF
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2",
+  "registry-mirrors": ["https://alzgoonw.mirror.aliyuncs.com"],
+  "live-restore": true
+}
+EOF
+
+# restart docker servie
+sudo systemctl daemon-reload
+sudo systemctl restart docker
 
 # master kubeadm config file
 cat <<EOF > ./kubeadm.yaml
@@ -56,11 +83,13 @@ EOF
 sudo kubeadm init --config ./kubeadm.yaml
 
 # config kubeadm config to HOME folder
-mkdir -p $HOME/.kube
+sudo mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 # deploy network plugin
-sudo kubectl apply -f "https://frontend.dev.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+sudo kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+## old one
+# sudo kubectl apply -f "https://frontend.dev.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 
 SCRIPT

@@ -1,5 +1,104 @@
 # Log
 
+## Master ip addr
+```shell
+vagrant@eckAction-master-16:~$ ip addr
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 02:ba:b8:ca:39:a3 brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global enp0s3
+       valid_lft forever preferred_lft forever
+    inet6 fe80::ba:b8ff:feca:39a3/64 scope link
+       valid_lft forever preferred_lft forever
+3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:ac:56:37 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.0.210/24 brd 192.168.0.255 scope global enp0s8
+       valid_lft forever preferred_lft forever
+    inet6 fd19:8e8b:1d54:0:a00:27ff:feac:5637/64 scope global mngtmpaddr dynamic
+       valid_lft forever preferred_lft forever
+    inet6 240e:39a:137:69d0:a00:27ff:feac:5637/64 scope global mngtmpaddr dynamic
+       valid_lft 93592sec preferred_lft 7192sec
+    inet6 fe80::a00:27ff:feac:5637/64 scope link
+       valid_lft forever preferred_lft forever
+4: docker0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default
+    link/ether 02:42:c7:61:bc:f3 brd ff:ff:ff:ff:ff:ff
+    inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0
+       valid_lft forever preferred_lft forever
+5: datapath: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1376 qdisc noqueue state UNKNOWN group default qlen 1
+    link/ether c6:bb:a7:84:9b:f1 brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::c4bb:a7ff:fe84:9bf1/64 scope link
+       valid_lft forever preferred_lft forever
+7: weave: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1376 qdisc noqueue state UP group default qlen 1000
+    link/ether 12:5a:c4:85:c2:6e brd ff:ff:ff:ff:ff:ff
+    inet 10.32.0.1/12 brd 10.47.255.255 scope global weave
+       valid_lft forever preferred_lft forever
+    inet6 fe80::105a:c4ff:fe85:c26e/64 scope link
+       valid_lft forever preferred_lft forever
+8: dummy0: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN group default qlen 1000
+    link/ether 86:1f:97:c7:1c:3a brd ff:ff:ff:ff:ff:ff
+10: vethwe-datapath@vethwe-bridge: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1376 qdisc noqueue master datapath state UP group default
+    link/ether 4e:33:dc:26:d6:0e brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::4c33:dcff:fe26:d60e/64 scope link
+       valid_lft forever preferred_lft forever
+11: vethwe-bridge@vethwe-datapath: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1376 qdisc noqueue master weave state UP group default
+    link/ether 8a:1a:99:45:e1:2d brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::881a:99ff:fe45:e12d/64 scope link
+       valid_lft forever preferred_lft forever
+12: vxlan-6784: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65485 qdisc noqueue master datapath state UNKNOWN group default qlen 1000
+    link/ether f2:40:c6:01:35:1b brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::f040:c6ff:fe01:351b/64 scope link
+       valid_lft forever preferred_lft forever
+14: vethweplbe05f14@if13: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1376 qdisc noqueue master weave state UP group default
+    link/ether 8a:97:4c:82:01:2e brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet6 fe80::8897:4cff:fe82:12e/64 scope link
+       valid_lft forever preferred_lft forever
+16: vethweplbbec8cf@if15: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1376 qdisc noqueue master weave state UP group default
+    link/ether 96:7f:e6:57:30:1a brd ff:ff:ff:ff:ff:ff link-netnsid 1
+    inet6 fe80::947f:e6ff:fe57:301a/64 scope link
+       valid_lft forever preferred_lft forever
+18: vethwepl453ed46@if17: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1376 qdisc noqueue master weave state UP group default
+    link/ether 9e:47:e2:1f:3b:c0 brd ff:ff:ff:ff:ff:ff link-netnsid 2
+    inet6 fe80::9c47:e2ff:fe1f:3bc0/64 scope link
+       valid_lft forever preferred_lft forever
+20: vethwepl48d8f4a@if19: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1376 qdisc noqueue master weave state UP group default
+    link/ether 16:25:da:fa:99:07 brd ff:ff:ff:ff:ff:ff link-netnsid 3
+    inet6 fe80::1425:daff:fefa:9907/64 scope link
+       valid_lft forever preferred_lft forever
+22: vethweplce94ff7@if21: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1376 qdisc noqueue master weave state UP group default
+    link/ether 12:f5:91:66:7e:86 brd ff:ff:ff:ff:ff:ff link-netnsid 4
+    inet6 fe80::10f5:91ff:fe66:7e86/64 scope link
+       valid_lft forever preferred_lft forever
+26: vethwepleac3754@if25: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1376 qdisc noqueue master weave state UP group default
+    link/ether e2:d1:61:3a:85:57 brd ff:ff:ff:ff:ff:ff link-netnsid 6
+    inet6 fe80::e0d1:61ff:fe3a:8557/64 scope link
+       valid_lft forever preferred_lft forever
+30: vethwepl53c3019@if29: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1376 qdisc noqueue master weave state UP group default
+    link/ether 9e:f7:5c:02:af:0c brd ff:ff:ff:ff:ff:ff link-netnsid 5
+    inet6 fe80::9cf7:5cff:fe02:af0c/64 scope link
+       valid_lft forever preferred_lft forever
+32: vethweplce0bc7d@if31: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1376 qdisc noqueue master weave state UP group default
+    link/ether fa:ee:a0:60:be:69 brd ff:ff:ff:ff:ff:ff link-netnsid 7
+    inet6 fe80::f8ee:a0ff:fe60:be69/64 scope link
+       valid_lft forever preferred_lft forever
+34: vethweplb577716@if33: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1376 qdisc noqueue master weave state UP group default
+    link/ether be:d2:eb:2f:e0:50 brd ff:ff:ff:ff:ff:ff link-netnsid 8
+    inet6 fe80::bcd2:ebff:fe2f:e050/64 scope link
+       valid_lft forever preferred_lft forever
+36: vethwepl2656ada@if35: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1376 qdisc noqueue master weave state UP group default
+    link/ether 7e:cb:55:e8:9d:bc brd ff:ff:ff:ff:ff:ff link-netnsid 9
+    inet6 fe80::7ccb:55ff:fee8:9dbc/64 scope link
+       valid_lft forever preferred_lft forever
+54: vethwepld31cf40@if53: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1376 qdisc noqueue master weave state UP group default
+    link/ether 8e:ca:86:22:b1:a5 brd ff:ff:ff:ff:ff:ff link-netnsid 10
+    inet6 fe80::8cca:86ff:fe22:b1a5/64 scope link
+       valid_lft forever preferred_lft forever
+```
+
 ## Master kubeadm init log
 
 ```shell

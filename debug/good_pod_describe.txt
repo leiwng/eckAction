@@ -1,0 +1,120 @@
+root@eckAction-master-16:~/.kube# kubectl describe pod weave-net-lmm4t -n kube-system
+Name:                 weave-net-lmm4t
+Namespace:            kube-system
+Priority:             2000001000
+Priority Class Name:  system-node-critical
+Node:                 eckaction-master-16/10.0.2.15
+Start Time:           Wed, 22 Apr 2020 03:32:44 +0000
+Labels:               controller-revision-hash=5fff867ff9
+                      name=weave-net
+                      pod-template-generation=1
+Annotations:          <none>
+Status:               Running
+IP:                   10.0.2.15
+IPs:
+  IP:           10.0.2.15
+Controlled By:  DaemonSet/weave-net
+Containers:
+  weave:
+    Container ID:  docker://833c1ba49cd014e32d07081162f0b10963963cbb45edd763963e91766c9018c5
+    Image:         docker.io/weaveworks/weave-kube:2.6.2
+    Image ID:      docker-pullable://weaveworks/weave-kube@sha256:a1f58e75f24f02e1c2fa2a95b9e55a1b94930f455e75bd5f4799e1a55671971f
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      /home/weave/launch.sh
+    State:          Running
+      Started:      Wed, 22 Apr 2020 03:32:45 +0000
+    Ready:          True
+    Restart Count:  0
+    Requests:
+      cpu:      10m
+    Readiness:  http-get http://127.0.0.1:6784/status delay=0s timeout=1s period=10s #success=1 #failure=3
+    Environment:
+      HOSTNAME:   (v1:spec.nodeName)
+    Mounts:
+      /host/etc from cni-conf (rw)
+      /host/home from cni-bin2 (rw)
+      /host/opt from cni-bin (rw)
+      /host/var/lib/dbus from dbus (rw)
+      /lib/modules from lib-modules (rw)
+      /run/xtables.lock from xtables-lock (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from weave-net-token-ffk7s (ro)
+      /weavedb from weavedb (rw)
+  weave-npc:
+    Container ID:   docker://7d5e6ccb2cf222d6990cd357bce5fc801b092c6820036c636e53526b83fb6dde
+    Image:          docker.io/weaveworks/weave-npc:2.6.2
+    Image ID:       docker-pullable://weaveworks/weave-npc@sha256:5694b0b77003780333ccd1fc79810469434779cd86e926a17675cc5b70470459
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Wed, 22 Apr 2020 03:32:45 +0000
+    Ready:          True
+    Restart Count:  0
+    Requests:
+      cpu:  10m
+    Environment:
+      HOSTNAME:   (v1:spec.nodeName)
+    Mounts:
+      /run/xtables.lock from xtables-lock (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from weave-net-token-ffk7s (ro)
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  weavedb:
+    Type:          HostPath (bare host directory volume)
+    Path:          /var/lib/weave
+    HostPathType:
+  cni-bin:
+    Type:          HostPath (bare host directory volume)
+    Path:          /opt
+    HostPathType:
+  cni-bin2:
+    Type:          HostPath (bare host directory volume)
+    Path:          /home
+    HostPathType:
+  cni-conf:
+    Type:          HostPath (bare host directory volume)
+    Path:          /etc
+    HostPathType:
+  dbus:
+    Type:          HostPath (bare host directory volume)
+    Path:          /var/lib/dbus
+    HostPathType:
+  lib-modules:
+    Type:          HostPath (bare host directory volume)
+    Path:          /lib/modules
+    HostPathType:
+  xtables-lock:
+    Type:          HostPath (bare host directory volume)
+    Path:          /run/xtables.lock
+    HostPathType:  FileOrCreate
+  weave-net-token-ffk7s:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  weave-net-token-ffk7s
+    Optional:    false
+QoS Class:       Burstable
+Node-Selectors:  <none>
+Tolerations:     :NoSchedule
+                 :NoExecute
+                 node.kubernetes.io/disk-pressure:NoSchedule
+                 node.kubernetes.io/memory-pressure:NoSchedule
+                 node.kubernetes.io/network-unavailable:NoSchedule
+                 node.kubernetes.io/not-ready:NoExecute
+                 node.kubernetes.io/pid-pressure:NoSchedule
+                 node.kubernetes.io/unreachable:NoExecute
+                 node.kubernetes.io/unschedulable:NoSchedule
+Events:
+  Type    Reason     Age   From                          Message
+  ----    ------     ----  ----                          -------
+  Normal  Scheduled  27m   default-scheduler             Successfully assigned kube-system/weave-net-lmm4t to eckaction-master-16
+  Normal  Pulled     27m   kubelet, eckaction-master-16  Container image "docker.io/weaveworks/weave-kube:2.6.2" already present on machine
+  Normal  Created    27m   kubelet, eckaction-master-16  Created container weave
+  Normal  Started    27m   kubelet, eckaction-master-16  Started container weave
+  Normal  Pulled     27m   kubelet, eckaction-master-16  Container image "docker.io/weaveworks/weave-npc:2.6.2" already present on machine
+  Normal  Created    27m   kubelet, eckaction-master-16  Created container weave-npc
+  Normal  Started    27m   kubelet, eckaction-master-16  Started container weave-npc
